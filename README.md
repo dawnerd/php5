@@ -1,9 +1,11 @@
 php5
-=======
+===
 
-Better way to build a PHP5/nginx server.
+Optimized build of php for wordpress.
 
-Once you've built this Dockerfile as `docker build -t octohost/php5:5.5 .` - your next Dockerfile should look like this:
+max_upload_size is set to 100M
+
+Setup your `Dockerfile` like so:
 
 ```
 FROM dawnerd/php5
@@ -15,4 +17,4 @@ EXPOSE 80
 CMD service php5-fpm start && nginx
 ```
 
-Simple and quick way to push PHP code up.
+I've got production sites running this build with [nginx-proxy](https://github.com/jwilder/nginx-proxy) and [docker-letsencrypt-nginx-proxy-companion](https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion).
