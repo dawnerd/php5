@@ -7,6 +7,20 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com --recv-keys E5267A6C; \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ && mv /usr/bin/composer.phar /usr/bin/composer
-RUN echo "<?php phpinfo(); ?>" > /srv/www/phpinfo.php
+
+RUN { \
+		echo 'opcache.memory_consumption=128'; \
+		echo 'opcache.interned_strings_buffer=8'; \
+		echo 'opcache.max_accelerated_files=4000'; \
+		echo 'opcache.revalidate_freq=60'; \
+		echo 'opcache.fast_shutdown=1'; \
+		echo 'opcache.enable_cli=1'; \
+	} > /etc/php5/fpm/pool.d/opcache-recommended.conf
+
+RUN { \
+		echo 'upload_max_filesize=100M'; \
+		echo 'post_max_size=100M'; \
+		echo 'max_file_uploads=10'; \
+	} > /etc/php5/fpm/pool.d/pload.conf
 
 ADD ./default /etc/nginx/sites-available/default
